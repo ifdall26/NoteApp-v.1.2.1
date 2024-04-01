@@ -2,28 +2,25 @@ import "./app-footer.js";
 import "./app-header.js";
 import "./note-item.js";
 import "../style/style.css";
-import "./loading-spinner.js"; // Menambahkan import untuk loading-spinner.js
 
+// Fungsi untuk memuat dan menerapkan berkas CSS
+function loadCSS(filename) {
+  var link = document.createElement("link");
+  link.href = filename;
+  link.rel = "stylesheet";
+  link.type = "text/css";
+  document.getElementsByTagName("head")[0].appendChild(link);
+}
+
+// Memanggil fungsi untuk memuat dan menerapkan berkas CSS
+loadCSS("../style/style.css");
 const noteList = document.getElementById("noteList");
 const noteForm = document.getElementById("noteForm");
 const noteTitleInput = document.getElementById("noteTitle");
 const noteBodyInput = document.getElementById("noteBody");
-const loadingSpinner = document.getElementById("loadingSpinner"); // Menambahkan referensi ke elemen loading-spinner
-
-// Fungsi untuk menampilkan indikator loading
-function showLoading() {
-  loadingSpinner.style.display = "block";
-}
-
-// Fungsi untuk menyembunyikan indikator loading
-function hideLoading() {
-  loadingSpinner.style.display = "none";
-}
 
 // Fungsi untuk menampilkan catatan dari API
 function renderNotes() {
-  showLoading(); // Memanggil fungsi untuk menampilkan indikator loading
-
   // Membersihkan terlebih dahulu elemen noteList
   noteList.innerHTML = "";
 
@@ -39,11 +36,9 @@ function renderNotes() {
         `;
         noteList.appendChild(noteItem);
       });
-      hideLoading(); // Memanggil fungsi untuk menyembunyikan indikator loading setelah mendapatkan data
     })
     .catch((error) => {
       console.error("Error fetching notes:", error);
-      hideLoading(); // Memanggil fungsi untuk menyembunyikan indikator loading jika terjadi kesalahan
     });
 }
 
@@ -63,8 +58,6 @@ function addNoteHandler(event) {
     body,
   };
 
-  showLoading(); // Memanggil fungsi untuk menampilkan indikator loading saat proses penambahan catatan
-
   fetch("https://notes-api.dicoding.dev/v2/notes", {
     method: "POST",
     headers: {
@@ -75,18 +68,43 @@ function addNoteHandler(event) {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
-      renderNotes(); // Memanggil kembali fungsi renderNotes setelah menambah catatan
+      renderNotes();
       noteTitleInput.value = "";
       noteBodyInput.value = "";
     })
     .catch((error) => {
       console.error("Error adding note:", error);
-      hideLoading(); // Memanggil fungsi untuk menyembunyikan indikator loading jika terjadi kesalahan
+    });
+}
+
+// Fungsi untuk menghapus catatan
+function deleteNoteHandler(noteId) {
+  fetch(`https://notes-api.dicoding.dev/v2/notes/${noteId}`, {
+    method: "DELETE",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to delete note");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      renderNotes();
+    })
+    .catch((error) => {
+      console.error("Error deleting note:", error);
     });
 }
 
 // Event listener untuk menambahkan catatan saat form di-submit
 noteForm.addEventListener("submit", addNoteHandler);
 
-// Panggil fungsi untuk menampilkan catatan saat halaman dimuat
+// Event listener untuk menangani penghapusan catatan
+noteList.addEventListener("delete", (event) => {
+  const noteId = event.detail.noteId;
+  console.log("Deleting note with ID:", noteId);
+  deleteNoteHandler(noteId);
+});
+
 renderNotes();

@@ -1,7 +1,19 @@
 import "./app-footer.js";
 import "./app-header.js";
 import "./note-item.js";
+import "../style/style.css";
 
+// Fungsi untuk memuat dan menerapkan berkas CSS
+function loadCSS(filename) {
+  var link = document.createElement("link");
+  link.href = filename;
+  link.rel = "stylesheet";
+  link.type = "text/css";
+  document.getElementsByTagName("head")[0].appendChild(link);
+}
+
+// Memanggil fungsi untuk memuat dan menerapkan berkas CSS
+loadCSS("../style/style.css");
 const noteList = document.getElementById("noteList");
 const noteForm = document.getElementById("noteForm");
 const noteTitleInput = document.getElementById("noteTitle");

@@ -1,0 +1,99 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url(../img/bg.jpg);
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+#app {
+  max-width: 600px;
+  margin: 20px auto;
+  margin-top: 100px;
+  margin-bottom: 100px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #171717;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+textarea {
+  width: 96%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #444444;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e1f4f3;
+  color: black;
+}
+
+note-item {
+  display: block;
+}
+
+#noteList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.note-item {
+  background-color: #ededed;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+  overflow-wrap: break-word;
+  position: relative;
+  z-index: 1;
+}
+
+.note-item:hover {
+  box-shadow: 0px -2px 3px 1px rgba(234, 234, 234, 0.5),
+    0px -4px 6px 3px rgba(234, 234, 234, 0.5),
+    0px -6px 9px 5px rgba(234, 234, 234, 0.5);
+}
+
+.note-item h3 {
+  margin-top: 0;
+  color: #da0037;
+}
+
+.note h2 {
+  margin-top: 0;
+}
+
+.note p {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 768px) {
+  #app {
+    width: 95%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  input[type="text"],
+  textarea {
+    width: 95%;
+  }
+}
